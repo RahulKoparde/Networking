@@ -18,8 +18,8 @@ public class SocketServer {
 				System.out.println("Waiting for connection...");
 				Socket sockConnected = socket.accept();
 				System.out.println("Connected to " + sockConnected);
-				PrintStream ps = new PrintStream(sockConnected.getOutputStream());
-				ps.println("A warm welcome from the server!");
+				PrintStream out = new PrintStream(sockConnected.getOutputStream(), true, "UTF-8");
+				out.println("Well, that's me in some charset. Hope you're having fun! Even with Ümläutén");
 				sockConnected.close();
 			}
 		}
