@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class StreamServer {
 
@@ -21,10 +22,14 @@ public class StreamServer {
 				System.out.println("Connected to " + sockConnected);
 				PrintStream out = new PrintStream(sockConnected.getOutputStream(), true, "UTF-8");
 				out.println("Well, that's me in some charset. Hope you're having fun! Even with Ümläutén");
+				TimeUnit.SECONDS.sleep(1);
+				out.println("Well, that is amazing!\nDas funktioniert so überhaupt ähnlich gut wie alles andere!");
 				sockConnected.close();
 			}
 		}
 		catch (IOException e) {
+			System.err.println(e);
+		} catch (InterruptedException e) {
 			System.err.println(e);
 		}
 	}
