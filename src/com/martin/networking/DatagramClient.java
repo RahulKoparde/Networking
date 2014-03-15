@@ -12,7 +12,6 @@ public class DatagramClient {
 	static final String LOGOUT = "LOGOUT";
 	static final String servername = "80.218.146.10";
 	static int port = 1234;
-	static int length = 256;
 	
 	public static void main(String[] args) {
 		String text = null;
@@ -38,6 +37,7 @@ public class DatagramClient {
 				content = text.getBytes();
 				packet.setData(content);
 				socket.send(packet);
+				System.out.println("Me > " + text);
 			}
 			while (!text.contentEquals("LOGOUT"));
 			

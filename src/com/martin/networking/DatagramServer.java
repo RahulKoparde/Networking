@@ -20,9 +20,12 @@ public class DatagramServer {
 		try {
 			@SuppressWarnings("resource")
 			DatagramSocket socket = new DatagramSocket(port);
+			System.out.println("Ready for connection...");
 			for (;;) {
-				System.out.println("Waiting for connection...");
 				socket.receive(packet);
+				// TODO
+				byte[] buf = packet.getData();
+				
 				InetSocketAddress add = (InetSocketAddress) packet.getSocketAddress();
 				String text = new String(packet.getData(), 0, packet.getLength());
 				System.out.println(add + " > " + text);
@@ -33,7 +36,7 @@ public class DatagramServer {
 				}
 				else if (text.contentEquals(LOGOUT)) {
 					clients.remove(add);
-					System.out.println("Client " + add + " disconnected (" + clients.size() + "connected)"); 
+					System.out.println("Client " + add + " disconnected (" + clients.size() + " connected)"); 
 				}
 				else {
 					for (int i = 0; i < clients.size(); i++) {
