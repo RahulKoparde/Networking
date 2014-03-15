@@ -1,9 +1,7 @@
 package com.martin.dchat;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -24,23 +22,19 @@ public class Server {
 				System.out.println("Connected to " + clSocket);
 				
 				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clSocket.getOutputStream(), "UTF-8"));
-				BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "UTF-8"));
-				
-				out.write("Hi. What's your name?");
+								
+				out.write("Welcome to dchat. You're being connected to your handler...");
 				out.newLine();
 				out.flush();
 				
-				String msg = in.readLine();
-				out.write("Hello " + msg);
-				out.flush();
+				new Thread(new ClientManager(clSocket)).start();
 				
-				out.close();
-				in.close();
-				clSocket.close();
+				System.out.println("Socket has been given to handler.");
 			}
 		}
 		catch (IOException e) {
 			System.err.println(e);
+			e.printStackTrace();
 		}
 	}
 
