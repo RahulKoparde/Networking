@@ -27,7 +27,9 @@ public class Server {
 				out.newLine();
 				out.flush();
 				
-				new Thread(new ClientManager(clSocket)).start();
+				ClientManager clM = new ClientManager(clSocket);
+				new Thread(clM).start();
+				PostCentral.addClient(clM);
 				
 				System.out.println("Socket has been given to handler.");
 			}
