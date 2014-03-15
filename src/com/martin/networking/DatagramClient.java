@@ -16,11 +16,14 @@ public class DatagramClient {
 	public static void main(String[] args) {
 		String text = null;
 		DatagramPacket packet;
-		byte[] content = LOGON.getBytes();
 		
 		try {
+			Scanner scanner = new Scanner(System.in);
+			System.out.println("Your nickname:");
+			String nick = scanner.nextLine();
 			DatagramSocket socket = new DatagramSocket();
 			InetAddress dest = InetAddress.getByName(servername);
+			byte[] content = (LOGON + "<ex>" + nick + "</ex>").getBytes();
 			packet = new DatagramPacket(content, content.length, dest, port);
 			
 			System.out.println("Logging in...");
@@ -31,11 +34,9 @@ public class DatagramClient {
 			
 			System.out.println("Logged in. Ready to chat, type 'LOGOUT' to exit.");
 			
-			Scanner scanner = new Scanner(System.in);
 			do {
 				text = scanner.nextLine();
-				content = text.getBytes();
-				packet.setData(content);
+				packet.setData((text + "<ex>" + nick + "</ex>").getBytes());
 				socket.send(packet);
 				System.out.println("Me > " + text);
 			}

@@ -3,7 +3,6 @@ package com.martin.networking;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetSocketAddress;
 
 public class ReadThread implements Runnable {
 	static int length = 256;
@@ -17,13 +16,13 @@ public class ReadThread implements Runnable {
 
 	@Override
 	public void run() {
+		String text;
 		DatagramPacket packet = new DatagramPacket(new byte[length], length);
 		for (;;) {
 			try {
 				socket.receive(packet);
-				InetSocketAddress add = (InetSocketAddress) packet.getSocketAddress();
-				String text = new String(packet.getData(), 0, packet.getLength());
-				System.out.println(add + " > " + text);
+				text = new String(packet.getData(), 0, packet.getLength());
+				System.out.println(text);
 			}
 			catch (IOException e) {
 				System.err.println(e);

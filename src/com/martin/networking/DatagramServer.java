@@ -17,34 +17,40 @@ public class DatagramServer {
 		DatagramPacket packet = new DatagramPacket(new byte[length], length);
 		ArrayList<InetSocketAddress> clients = new ArrayList<InetSocketAddress>();
 		
+		String received;
+		String text;
+		String name;
+		
 		try {
 			@SuppressWarnings("resource")
 			DatagramSocket socket = new DatagramSocket(port);
 			System.out.println("Ready for connection...");
 			for (;;) {
 				socket.receive(packet);
-				// TODO
-				byte[] buf = packet.getData();
-				
 				InetSocketAddress add = (InetSocketAddress) packet.getSocketAddress();
-				String text = new String(packet.getData(), 0, packet.getLength());
-				System.out.println(add + " > " + text);
+				received = new String(packet.getData(), 0, packet.getLength());
+				
+				System.out.println(add + " > " + received);
+				
+				text = received.substring(0, received.indexOf("<ex>"));
+				name = received.substring(received.indexOf("<ex>") + 4, received.indexOf("</ex>"));
 				
 				if (text.contentEquals(LOGON)) {
 					clients.add(add);
-					System.out.println("New client " + add + " connected (" + clients.size() + " connected)");
+					System.out.println("New client " + name + " connected (" + clients.size() + " connected)");
 				}
 				else if (text.contentEquals(LOGOUT)) {
 					clients.remove(add);
-					System.out.println("Client " + add + " disconnected (" + clients.size() + " connected)"); 
+					System.out.println("Client " + name + " disconnected (" + clients.size() + " connected)"); 
 				}
 				else {
 					for (int i = 0; i < clients.size(); i++) {
 						InetSocketAddress dest = (InetSocketAddress) clients.get(i);
 						if (!dest.equals(add)) {
 							packet.setSocketAddress(dest);
+							packet.setData((name + " > " + text).getBytes());
 							socket.send(packet);
-							System.out.println("Message sent to " + add);
+							System.out.println("Message sent to " + clients.get(i));
 						}
 					}
 				}
