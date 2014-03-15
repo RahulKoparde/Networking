@@ -27,8 +27,10 @@ public class ClientManager implements Runnable {
 			out.flush();
 			
 			String msg;
-			//while ((msg = in.readLine()) != null) {
-			while (!(msg = in.readLine()).contentEquals("END")) {
+			while ((msg = in.readLine()) != null) {
+				if (msg.contentEquals("END")) {
+					break;
+				}
 				out.write(msg);
 				out.newLine();
 				out.flush();
