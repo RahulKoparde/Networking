@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class ClientManager implements Runnable {
 	
@@ -66,6 +67,9 @@ public class ClientManager implements Runnable {
 			System.out.println(name + " (" + clSocket.getInetAddress() + ") disconnected (" + PostCentral.getUsercount() + " users)");
 			clSocket.close();
 			PostCentral.broadcast(name + " disconnected");
+		}
+		catch (SocketTimeoutException e) {
+			System.out.println("A client has been disconnected due to timeout");
 		}
 		catch (IOException e) {
 			System.err.println(e);

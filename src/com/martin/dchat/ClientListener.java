@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public class ClientListener implements Runnable {
 
@@ -24,7 +25,11 @@ public class ClientListener implements Runnable {
 				text = in.readLine();
 				System.out.println(text);
 			}
-		} catch (UnsupportedEncodingException e) {
+		} 
+		catch (SocketTimeoutException e) {
+			System.out.println("Disconnected due to timeout");
+		}
+		catch (UnsupportedEncodingException e) {
 			System.err.println(e);
 			e.printStackTrace();
 		} catch (IOException e) {

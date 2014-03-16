@@ -32,7 +32,8 @@ public class Client {
 					System.exit(0);
 				}
 			}
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			System.err.println(e);
 			e.printStackTrace();
 		}
