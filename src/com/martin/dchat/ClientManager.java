@@ -17,7 +17,7 @@ public class ClientManager implements Runnable {
 		super();
 		this.clSocket = clSocket;
 		try {
-			out = new BufferedWriter(new OutputStreamWriter(clSocket.getOutputStream(), "UTF-8"));
+			out = new BufferedWriter(new OutputStreamWriter(clSocket.getOutputStream(), "UTF-16"));
 		} catch (UnsupportedEncodingException e) {
 			System.err.println(e);
 			e.printStackTrace();
@@ -45,7 +45,7 @@ public class ClientManager implements Runnable {
 	@Override
 	public void run() {
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "UTF-8"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "UTF-16"));
 			
 			sendMsg("Hi, I'm your handler. What's your name?");
 			String name = in.readLine();

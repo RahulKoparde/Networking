@@ -4,7 +4,6 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class Client {
@@ -19,9 +18,9 @@ public class Client {
 
 			new Thread(new ClientListener(clSocket)).start();
 			
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clSocket.getOutputStream(), "UTF-8"));
-			Scanner scanner = new Scanner(System.in, "UTF-8");
-			scanner.useLocale(Locale.getDefault());
+			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clSocket.getOutputStream(), "UTF-16"));
+			Scanner scanner = new Scanner(System.in, "UTF-16");
+			//Scanner scanner = new Scanner(System.in);
 			
 			String text;
 			while ((text = scanner.nextLine()) != null) {
