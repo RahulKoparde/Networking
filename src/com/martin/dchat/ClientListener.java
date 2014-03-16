@@ -18,9 +18,10 @@ public class ClientListener implements Runnable {
 	@Override
 	public void run() {
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "UTF-16"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "UTF-8"));
 			String text;
-			while ((text = in.readLine()) != null) {
+			while (clSocket != null) {
+				text = in.readLine();
 				System.out.println(text);
 			}
 		} catch (UnsupportedEncodingException e) {
