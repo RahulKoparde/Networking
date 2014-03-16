@@ -18,7 +18,7 @@ public class ClientListener implements Runnable {
 	@Override
 	public void run() {
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "UTF-8"));
+			BufferedReader in = new BufferedReader(new InputStreamReader(clSocket.getInputStream(), "ISO-8859-1"));
 			String text;
 			while (clSocket != null) {
 				text = in.readLine();

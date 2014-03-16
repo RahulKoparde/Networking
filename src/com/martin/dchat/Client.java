@@ -19,7 +19,7 @@ public class Client {
 			new Thread(new ClientListener(clSocket)).start();
 
 			final BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-					clSocket.getOutputStream(), "UTF-8"));
+					clSocket.getOutputStream(), "ISO-8859-1"));
 			Scanner scanner = new Scanner(System.in);
 
 			String text;
