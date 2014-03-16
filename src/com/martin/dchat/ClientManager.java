@@ -50,6 +50,7 @@ public class ClientManager implements Runnable {
 			sendMsg("Hi, I'm your handler. What's your name?");
 			String name = in.readLine();
 			System.out.println(clSocket.getInetAddress() + " logged in with name " + name + " (" + PostCentral.getUsercount() + " users)");
+			PostCentral.broadcast(name + " connected");
 			sendMsg("Hi " + name + ". You can start typing now, when you want to disconnect type 'END'.");
 			
 			String msg;
@@ -64,6 +65,7 @@ public class ClientManager implements Runnable {
 			PostCentral.removeClient(this);
 			System.out.println(name + " (" + clSocket.getInetAddress() + ") disconnected (" + PostCentral.getUsercount() + " users)");
 			clSocket.close();
+			PostCentral.broadcast(name + " disconnected");
 		}
 		catch (IOException e) {
 			System.err.println(e);
