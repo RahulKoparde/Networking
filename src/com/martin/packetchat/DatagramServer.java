@@ -14,6 +14,8 @@ public class DatagramServer {
 	public static void main(String[] args) {
 		DatagramPacket packet = new DatagramPacket(new byte[LENGTH], LENGTH);
 		ArrayList<InetSocketAddress> clients = new ArrayList<InetSocketAddress>();
+		// TODO: This way of storing the nicks is not working out, because an ArrayList is essentially unordered
+		// A Map-type would be better
 		ArrayList<String> nicks = new ArrayList<String>();
 		
 		String received;

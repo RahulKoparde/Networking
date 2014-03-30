@@ -43,7 +43,6 @@ public class DatagramClient {
 					packet.setData((proto.encodeMessage(Action.MESSAGE, text)).getBytes());
 				}
 				socket.send(packet);
-				//System.out.println("Me > " + text);
 			}
 			while (!text.contentEquals("LOGOUT"));
 			
