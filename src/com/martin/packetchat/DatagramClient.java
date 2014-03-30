@@ -41,7 +41,7 @@ public class DatagramClient {
 				socket.send(packet);
 				System.out.println("Me > " + text);
 			}
-			while (!text.contentEquals("LOGOUT"));
+			while (!text.contentEquals(LOGOUT));
 			
 			scanner.close();
 			System.exit(0);

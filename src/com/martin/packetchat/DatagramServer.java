@@ -8,8 +8,6 @@ import java.util.ArrayList;
 
 public class DatagramServer {
 
-	private static final String LOGON = "LOGIN";
-	private static final String LOGOUT = "LOGOUT";
 	private static int PORT = 1234;
 	private static int LENGTH = 256;
 	
@@ -25,6 +23,9 @@ public class DatagramServer {
 			@SuppressWarnings("resource")
 			DatagramSocket socket = new DatagramSocket(PORT);
 			System.out.println("Ready for connection...");
+			
+			Protocol proto = new Protocol();
+			
 			for (;;) {
 				socket.receive(packet);
 				InetSocketAddress add = (InetSocketAddress) packet.getSocketAddress();
@@ -32,6 +33,22 @@ public class DatagramServer {
 				
 				System.out.println(add + " > " + received);
 				
+				switch (proto.getAction(received)) {
+				case LOGIN:
+					clients.add(add);
+					System.out.println("New client " + proto.getContent(received) + " connected (" + clients.size() + " connected)");
+					break;
+				case LOGOUT:
+					clients.remove(add);
+					System.out.println("Client " + name + " disconnected (" + clients.size() + " connected)"); 
+					break;
+				case MESSAGE:
+					
+					break;
+				default:
+					// disconnect the sucker
+					break;
+				}
 				text = received.substring(0, received.indexOf("<ex>"));
 				name = received.substring(received.indexOf("<ex>") + 4, received.indexOf("</ex>"));
 				
