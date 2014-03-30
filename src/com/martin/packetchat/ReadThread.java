@@ -19,10 +19,12 @@ public class ReadThread implements Runnable {
 	public void run() {
 		String text;
 		DatagramPacket packet = new DatagramPacket(new byte[length], length);
+		Protocol proto = new Protocol();
+		
 		for (;;) {
 			try {
 				socket.receive(packet);
-				text = new String(packet.getData(), 0, packet.getLength());
+				text = proto.getContent(new String(packet.getData(), 0, packet.getLength()));
 				System.out.println(text);
 			}
 			catch (IOException e) {

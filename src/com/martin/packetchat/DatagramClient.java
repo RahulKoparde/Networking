@@ -8,8 +8,6 @@ import java.util.Scanner;
 
 public class DatagramClient {
 
-	private static final String LOGON = "LOGIN";
-	private static final String LOGOUT = "LOGOUT";
 	private static final String SERVERNAME = "80.218.146.10";
 	private static final int PORT = 1234;
 	private static final int LENGTH = 256;
@@ -17,6 +15,7 @@ public class DatagramClient {
 	public static void main(String[] args) {
 		String text = null;
 		DatagramPacket packet;
+		Protocol proto = new Protocol();
 		
 		try {
 			Scanner scanner = new Scanner(System.in);
@@ -24,7 +23,7 @@ public class DatagramClient {
 			String nick = scanner.nextLine();
 			DatagramSocket socket = new DatagramSocket();
 			InetAddress dest = InetAddress.getByName(SERVERNAME);
-			byte[] content = (LOGON + "<ex>" + nick + "</ex>").getBytes();
+			byte[] content = (proto.encodeMessage(Action.LOGIN, nick)).getBytes();
 			packet = new DatagramPacket(content, content.length, dest, PORT);
 			
 			System.out.println("Logging in...");
@@ -37,11 +36,16 @@ public class DatagramClient {
 			
 			do {
 				text = scanner.nextLine();
-				packet.setData((text + "<ex>" + nick + "</ex>").getBytes());
+				if (text.toUpperCase().contentEquals("LOGOUT")) {
+					packet.setData(proto.encodeMessage(Action.LOGOUT, nick).getBytes());
+				}
+				else {
+					packet.setData((proto.encodeMessage(Action.MESSAGE, text)).getBytes());
+				}
 				socket.send(packet);
-				System.out.println("Me > " + text);
+				//System.out.println("Me > " + text);
 			}
-			while (!text.contentEquals(LOGOUT));
+			while (!text.contentEquals("LOGOUT"));
 			
 			scanner.close();
 			System.exit(0);

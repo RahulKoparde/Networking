@@ -14,10 +14,9 @@ public class DatagramServer {
 	public static void main(String[] args) {
 		DatagramPacket packet = new DatagramPacket(new byte[LENGTH], LENGTH);
 		ArrayList<InetSocketAddress> clients = new ArrayList<InetSocketAddress>();
+		ArrayList<String> nicks = new ArrayList<String>();
 		
 		String received;
-		String text;
-		String name;
 		
 		try {
 			@SuppressWarnings("resource")
@@ -36,20 +35,31 @@ public class DatagramServer {
 				switch (proto.getAction(received)) {
 				case LOGIN:
 					clients.add(add);
+					nicks.add(proto.getContent(received));
 					System.out.println("New client " + proto.getContent(received) + " connected (" + clients.size() + " connected)");
 					break;
 				case LOGOUT:
 					clients.remove(add);
-					System.out.println("Client " + name + " disconnected (" + clients.size() + " connected)"); 
+					nicks.remove(clients.indexOf(add));
+					System.out.println("Client " + proto.getContent(received) + " disconnected (" + clients.size() + " connected)"); 
 					break;
 				case MESSAGE:
-					
+					for (int i = 0; i < clients.size(); i++) {
+						InetSocketAddress dest = (InetSocketAddress) clients.get(i);
+						if (!dest.equals(add)) {
+							packet.setSocketAddress(dest);
+							packet.setData((proto.encodeMessage(Action.MESSAGE, nicks.get(clients.indexOf(add)) + " > " + proto.getContent(received))).getBytes());
+							socket.send(packet);
+							//System.out.println("Message sent to " + clients.get(i));
+						}
+					}
 					break;
 				default:
-					// disconnect the sucker
+					// Don't react if we were sent gibberish
 					break;
 				}
-				text = received.substring(0, received.indexOf("<ex>"));
+				
+				/*text = received.substring(0, received.indexOf("<ex>"));
 				name = received.substring(received.indexOf("<ex>") + 4, received.indexOf("</ex>"));
 				
 				if (text.contentEquals(LOGON)) {
@@ -71,6 +81,7 @@ public class DatagramServer {
 						}
 					}
 				}
+				*/
 			}
 		}
 		catch (IOException e) {
